@@ -114,7 +114,7 @@ echo "== packaging"
 rm -rf "$OUT/res.zip" "$OUT/unsigned.apk" "$OUT/apk"
 "$BT/aapt2" compile --dir android/res -o "$OUT/res.zip"
 "$BT/aapt2" link -o "$OUT/unsigned.apk" -I "$JAR" --manifest android/AndroidManifest.xml \
-     --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" \
+     --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" --replace-version \
      --min-sdk-version $API --target-sdk-version 34 \
      -A "$ASSETS" "$OUT/res.zip" --auto-add-overlay
 mkdir -p "$OUT/apk"
