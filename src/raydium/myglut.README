@@ -1,0 +1,11 @@
+(my)glut is an alternative to "real" GLUT, providing a small subset
+of the original API, up to Raydium needs.
+
+This code is heavily based on PW, the PLIB windowing library
+( http://plib.sourceforge.net/ ). Huge thanks to Steve Baker for his great work.
+
+Xf.
+---
+Raydium - CQFD Corp.
+http://raydium.org/
+License: GPL - GNU General Public License, see "gpl.txt" file.

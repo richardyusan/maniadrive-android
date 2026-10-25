@@ -1,0 +1,50 @@
+// Default theme for Raydium's GUI
+
+// (based on Eugenia Loli-Queru's GTK+/Gnome theme)
+// {startx,starty,lenx,leny}
+
+texture="theme-raydium2.tga";
+// allows 0..256 values (and not 0..1)
+texture_size={256,256};
+
+// This is the default font for Raydium
+//font="font2.tga";
+
+// Windows's borders ?
+// ... (hborder, vborder, hborder_factor, vborder_factor) | think to title too !
+
+// Background
+background={10,169, 137,83}
+
+// Button (3 states : normal, focus, hover)
+button_normal={89,5, 77,26};
+button_focus={5,5, 77,26};
+button_hover={173,5, 77,26};
+button_font={0,0,0};
+
+// Edit (2 states only)
+edit_normal={9,118, 138, 21};
+edit_focus={9,141, 138, 21};
+edit_font={0,0,0};
+
+// Track (2 states for cursor)
+track_rule={12,61, 101, 11};
+track_cursor_normal={140,58, 11,17};
+track_cursor_focus={125,58, 11,17};
+
+// Checkbox
+check_normal={161,64,18,16};
+check_checked={180,64, 18,16};
+font_color_normal={0,0,0};
+font_color_focus={0.2,0.3,0.6};
+
+// Combobox
+combo_body_normal={10,87,110,21};
+combo_body_focus={136,87,110,21};
+combo_body_border_right=20;
+combo_list_top={158,117,86,20};
+combo_list_middle={158,127,86,20};
+combo_list_bottom={158,137,86,20};
+combo_list_current={160,182,82,17};
+combo_arrow={211,210,24,16};
+combo_font={0,0,0};
