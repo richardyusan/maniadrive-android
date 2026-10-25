@@ -40,7 +40,7 @@ Third-party libraries (downloaded and pinned by `scripts/fetch_deps.sh`):
 | ABIs | `arm64-v8a`, `armeabi-v7a`, `x86_64` |
 | Activity | `NativeActivity` subclass (`MainActivity.java`), lib `libmaniadrive.so` |
 | Orientation | `sensorLandscape` |
-| Frame rate | 60 fps (vsync + limiter + `ANativeWindow_setFrameRate`) |
+| Frame rate | unlocked by default; `-DPORT_FPS=60` locks it to 60 fps |
 
 ### Installing the toolchain (Linux / WSL)
 
@@ -150,7 +150,7 @@ Raydium engine 0.705 (src/raydium, small #ifdef MANIA_PORT patches)
     ▼                     ▼                      ▼                         ▼
   gl4es → GLES 2.0     OpenAL Soft →        src/port/myglut-android.c   src/port/php_shim.c
                        OpenSL ES            (EGL, NativeActivity input,  (same logic in C)
-                       + port/alut_mini.c    60 fps lock, pause/resume)
+                       + port/alut_mini.c    fps limit, pause/resume)  
 ```
 
 | File | Role |
@@ -170,13 +170,16 @@ generated tracks live in `files/.mania_drive` and are never overwritten.
 
 **Time**: Raydium's clock (`raydium_timecall_clock`) uses a monotonic clock
 that stops while the app is in the background, so physics and timers do not
-jump after a pause. ODE runs at a fixed 400 Hz independently of the 60 fps
-display.
+jump after a pause. ODE runs at a fixed 400 Hz independently of the display
+frame rate.
 
-**60 fps lock**: `eglSwapInterval(1)`, `ANativeWindow_setFrameRate(60)` on
-Android 11+, and a limiter after each swap (sleeps until the next 1/60 s, with
-1 ms margin so a 60 Hz vsync is never missed). On 90/120 Hz screens the game
-still runs at 60 fps. Measured with the PC build: 600 frames = 10.0 s.
+**Frame rate**: unlocked by default (`PORT_FPS 0` in `src/port/port.h`):
+`eglSwapInterval(0)` and no limiter, so the game runs as fast as the phone
+allows (physics stay correct because ODE uses its own fixed 400 Hz clock).
+To lock it to 60 fps again, add `-DPORT_FPS=60` to `COMMON` in
+`build_android.sh`: this enables vsync, `ANativeWindow_setFrameRate(60)` on
+Android 11+ and a limiter after each swap (1 ms margin so a 60 Hz vsync is
+never missed; 90/120 Hz screens also run at 60 fps).
 
 **Resolution**: the EGL surface is at most 1080 pixels high (the display
 scaler does the rest); *Options → Max. resolution* (the PC "window mode"
@@ -210,6 +213,7 @@ Rows marked **●** happened during this port.
 | **●** crash in `glUseProgramObjectARB(0)` | Raydium detected GLSL support and switched programs every texture change | `raydium_shader_support=0` (ManiaDrive uses no shaders) |
 | **●** `call to undeclared function` errors | clang ≥ 16 treats implicit declarations as errors (2006 C code) | prototypes in `port.h`, `<sys/stat.h>`/`<ctype.h>` added |
 | **●** `d8`: `NullPointerException ... MainActivity$1.class` | d8 of build-tools 34 fails on anonymous classes compiled by JDK 21 | named nested class `KeyboardTask` |
+| **●** black screen and "not responding" after choosing a track | ARM `char` is unsigned: `mni_generate()` stores `fgetc()` in a `char`, never sees `EOF` and writes the track file forever | build with `-fsigned-char` (same behaviour as the PC version) |
 | physics objects fall through / crash in collisions | ODE ≥ 0.10 must be initialised | `dInitODE2(0)` + `dAllocateODEDataForThread()` |
 | `dReal` mismatch with OpenGL floats | Raydium expects single-precision ODE | ODE built with `-DODE_DOUBLE_PRECISION=OFF` |
 | no PHP on Android | story, track lists and playlist were PHP scripts | rewritten in C (`php_shim.c`), same variables through the Raydium register API |

@@ -12,7 +12,7 @@ a small platform layer replaces the PC parts (window, OpenGL, input, PHP).
 | Android | 8.0 or newer (API 26+) |
 | CPU | arm64-v8a, armeabi-v7a, x86_64 |
 | Graphics | OpenGL ES 2.0 (the game's OpenGL 1.x calls are translated by [gl4es](https://github.com/ptitSeb/gl4es)) |
-| Frame rate | **locked to 60 fps** |
+| Frame rate | unlocked (optional 60 fps lock at build time) |
 | APK size | about 47 MB |
 
 ## Install
@@ -54,7 +54,7 @@ while a gamepad is used. Hardware keyboards use the PC keys.
 
 - Runs full screen at the phone's resolution (capped at 1080p). *Options →
   Max. resolution* lowers it on slow phones (restart the game to apply).
-- *Shadow support* is off by default (Options) to keep 60 fps on every phone.
+- *Shadow support* is off by default (Options) for a smooth frame rate on every phone.
 - The **Internet Tracks** mode and online high scores are gone: the CQFD Corp.
   track and score servers were shut down years ago. Story mode, "Other
   tracks" (your own `.mni` tracks) and LAN multiplayer are kept.
@@ -84,8 +84,8 @@ the problems met during porting) are in [BUILD.md](BUILD.md).
 Port Android dari game balap **ManiaDrive 1.2**. Unduh `ManiaDrive.apk` dari
 halaman *Releases*, izinkan "instal aplikasi tidak dikenal", lalu buka.
 Kontrol: tombol kiri bawah = setir, kanan bawah = gas/rem, RESET = ulang
-lintasan, CAM = ganti kamera, MENU/tombol Back = keluar lintasan. Game dikunci
-di 60 fps. Cara build ada di [BUILD.md](BUILD.md).
+lintasan, CAM = ganti kamera, MENU/tombol Back = keluar lintasan. FPS tidak
+dibatasi. Cara build ada di [BUILD.md](BUILD.md).
 
 ## Credits and license
 
