@@ -104,3 +104,16 @@ the problems met during porting) are in [BUILD.md](BUILD.md).
   [OpenAL Soft 1.24.3](https://github.com/kcat/openal-soft) (LGPL 2),
   [libogg / libvorbis](https://xiph.org) (BSD),
   [libjpeg-turbo](https://libjpeg-turbo.org) (IJG / BSD).
+
+## 💖 Donasi
+
+Jika proyek ini bermanfaat, Anda bisa mendukung lewat kripto:
+
+| Koin | Jaringan | Alamat |
+|---|---|---|
+| BTC | Bitcoin | `1455F5BFc41XKc1Tjg8himciuiZXtHdrsz` |
+| ETH | Ethereum (ERC-20) | `0x411bd0C7a9A18d5A66B79F8C8c9D2b214D4A8214` |
+| BNB | BNB Smart Chain (BEP-20) | `0x411bd0C7a9A18d5A66B79F8C8c9D2b214D4A8214` |
+| USDT | ERC-20 / BEP-20 | `0x411bd0C7a9A18d5A66B79F8C8c9D2b214D4A8214` |
+
+⚠️ Pastikan jaringan sesuai. Detail dan QR code: [DONATE.md](DONATE.md)
