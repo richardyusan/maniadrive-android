@@ -79,14 +79,6 @@ export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
 All details (toolchain, signing, the PC test build, how the port works and
 the problems met during porting) are in [BUILD.md](BUILD.md).
 
-## Bahasa Indonesia (singkat)
-
-Port Android dari game balap **ManiaDrive 1.2**. Unduh `ManiaDrive.apk` dari
-halaman *Releases*, izinkan "instal aplikasi tidak dikenal", lalu buka.
-Kontrol: tombol kiri bawah = setir, kanan bawah = gas/rem, RESET = ulang
-lintasan, CAM = ganti kamera, MENU/tombol Back = keluar lintasan. FPS tidak
-dibatasi. Cara build ada di [BUILD.md](BUILD.md).
-
 ## Credits and license
 
 - **ManiaDrive** and the **Raydium 3D engine**: Xfennec and the CQFD Corp. /
