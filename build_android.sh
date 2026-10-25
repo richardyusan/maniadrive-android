@@ -52,7 +52,7 @@ build_abi() {
   T=$(triple "$abi")
   local CC="$TC/bin/clang --target=$T"
   mkdir -p "$O" "$OUT/lib/$abi"
-  local COMMON=(-fPIC -O2 -fwrapv -fno-strict-aliasing -fcommon -ffunction-sections -fdata-sections
+  local COMMON=(-fPIC -O2 -fwrapv -fno-strict-aliasing -fcommon -fsigned-char -ffunction-sections -fdata-sections
                 -DANDROID -DMANIA_PORT -DNO_PHP_SUPPORT -DLIBRAY
                 -I"$ROOT/src/port/include" -I"$ROOT/src/port" -I"$GLUE"
                 -I"$D/include/gl4es" -I"$D/include")

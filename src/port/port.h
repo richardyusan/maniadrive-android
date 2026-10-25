@@ -8,8 +8,11 @@
 
 #include <stdint.h>
 
-/* Target frame rate. The display is locked to this value. */
-#define PORT_FPS 60
+/* Frame rate limit. 0 = unlocked (no vsync, no limiter).
+   Build with -DPORT_FPS=60 to lock the game to 60 fps again. */
+#ifndef PORT_FPS
+#define PORT_FPS 0
+#endif
 
 /* --- time (monotonic, microseconds, does not advance while the app is paused) */
 uint64_t port_time_us(void);

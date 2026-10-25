@@ -15,7 +15,7 @@ mkdir -p "$OUT"
 
 [ -f "$D/.done" ] || scripts/build_deps.sh host
 
-CFLAGS=(-O1 -g -fwrapv -fno-strict-aliasing -fcommon -w
+CFLAGS=(-O1 -g ${EXTRA_CFLAGS:-} -fwrapv -fno-strict-aliasing -fcommon -fsigned-char -w
         -DMANIA_PORT -DMANIA_HEADLESS -DNO_PHP_SUPPORT -DLIBRAY
         -I"$ROOT/src/port/include" -I"$ROOT/src/port"
         -I"$D/include/gl4es" -I"$D/include")

@@ -9,7 +9,7 @@
  *                     input and screenshots (automated tests, see
  *                     scripts/test_linux.sh).
  *
- * Frame rate is locked to PORT_FPS (60): vsync (swap interval 1) plus a
+ * Frame rate: unlocked by default (PORT_FPS 0). With PORT_FPS=60: vsync plus a
  * sleep-based limiter for 90/120 Hz displays.
  *
  * This file is #included by raydium/myglut.c. GPL v2 or later.
@@ -92,8 +92,10 @@ static void sleep_us(int64_t us)
 static void frame_limiter(void)
 {
     static uint64_t next;
-    const uint64_t period = 1000000 / PORT_FPS;
-    uint64_t now = mono_us();
+    const uint64_t period = PORT_FPS > 0 ? 1000000 / PORT_FPS : 0;
+    uint64_t now;
+    if (!period) return;                /* unlocked */
+    now = mono_us();
     if (!next || now > next + 2 * period || now + 2 * period < next) {
         next = now + period;            /* (re)synchronise */
         return;
@@ -224,7 +226,7 @@ static void android_create_surface(void)
     {
         typedef int32_t (*setfr_fn)(ANativeWindow *, float, int8_t);
         setfr_fn f = (setfr_fn)dlsym(RTLD_DEFAULT, "ANativeWindow_setFrameRate");
-        if (f) f(win, (float)PORT_FPS, 1 /* FIXED_SOURCE */);
+        if (f && PORT_FPS > 0) f(win, (float)PORT_FPS, 1 /* FIXED_SOURCE */);
     }
 
     egl_surf = eglCreateWindowSurface(egl_dpy, egl_cfg, win, NULL);
@@ -232,7 +234,7 @@ static void android_create_surface(void)
         __android_log_print(ANDROID_LOG_ERROR, LOGTAG, "eglCreateWindowSurface/eglMakeCurrent failed: 0x%x", eglGetError());
         exit(1);
     }
-    eglSwapInterval(egl_dpy, 1);
+    eglSwapInterval(egl_dpy, PORT_FPS > 0 ? 1 : 0);   /* 0 = no vsync wait */
     eglQuerySurface(egl_dpy, egl_surf, EGL_WIDTH, &render_w);
     eglQuerySurface(egl_dpy, egl_surf, EGL_HEIGHT, &render_h);
     __android_log_print(ANDROID_LOG_INFO, LOGTAG, "surface %ix%i (screen %ix%i)", render_w, render_h, view_w, view_h);
@@ -812,8 +814,10 @@ void pwInit(int x, int y, int w, int h, int multisample,
     glViewport(0, 0, render_w, render_h);
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
-    raydium_log("(my)glut: %ix%i OpenGL ES 2 surface (gl4es), locked to %i fps",
-                render_w, render_h, PORT_FPS);
+    if (PORT_FPS > 0)
+        raydium_log("(my)glut: %ix%i OpenGL ES 2 surface (gl4es), locked to %i fps", render_w, render_h, PORT_FPS);
+    else
+        raydium_log("(my)glut: %ix%i OpenGL ES 2 surface (gl4es), frame rate unlocked", render_w, render_h);
 }
 
 void myglutGetEvents(void)
