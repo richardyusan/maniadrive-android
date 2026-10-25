@@ -15,6 +15,17 @@ a small platform layer replaces the PC parts (window, OpenGL, input, PHP).
 | Frame rate | unlocked (optional 60 fps lock at build time) |
 | APK size | about 47 MB |
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Driving with the touch controls](docs/screenshots/driving-checkpoints.jpg) | ![Pro track](docs/screenshots/driving-pro.jpg) |
+| ![Main menu](docs/screenshots/main-menu.jpg) | ![Story mode](docs/screenshots/story-mode.jpg) |
+
+*1600×720 (20:9 phone screen). Rendered by the port's own code with
+`scripts/test_linux.sh` (off-screen, software OpenGL ES on a PC), so the FPS
+counter shows the PC software renderer, not phone performance.*
+
 ## Install
 
 1. Download `ManiaDrive.apk` from the [Releases](../../releases) page (or the
