@@ -136,7 +136,7 @@ return -1;
 
 int raydium_live_video_open(char *device, int sizex, int sizey)
 {
-#ifndef WIN32
+#ifndef RAYDIUM_NO_V4L
 char *default_device=RAYDIUM_LIVE_DEVICE_DEFAULT;
 int id;
 int capture_style = RAYDIUM_LIVE_FREE;
@@ -402,7 +402,7 @@ return raydium_live_video_open(RAYDIUM_LIVE_DEVICE_AUTO,RAYDIUM_LIVE_SIZE_AUTO,R
 
 int raydium_live_video_read(raydium_live_Device *dev)
 {
-#ifndef WIN32
+#ifndef RAYDIUM_NO_V4L
 fd_set fds;
 struct timeval tv;
 int r;
@@ -494,7 +494,7 @@ int i;
 for(i=0;i<RAYDIUM_MAX_VIDEO_DEVICES;i++)
  if(raydium_live_device[i].capture_style!=RAYDIUM_LIVE_FREE)
  {
-#ifndef WIN32
+#ifndef RAYDIUM_NO_V4L
     munmap(raydium_live_device[i].buffer, raydium_live_device[i].gb_buffers.size);
     close(raydium_live_device[i].fd);
 #endif
@@ -556,7 +556,7 @@ return -1;
 
 int raydium_live_texture_video(int device_id, char *as)
 {
-#ifndef WIN32
+#ifndef RAYDIUM_NO_V4L
 int id;
 raydium_live_Device *dev;
 raydium_live_Texture *tex;

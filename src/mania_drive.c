@@ -7,6 +7,11 @@ char *version="ManiaDrive 1.2custom";
 #include "mania.h"
 #include "mania_creds.h"
 
+#ifdef MANIA_PORT
+// Android: finish the activity properly instead of killing the process
+#define exit(code) port_exit(code)
+#endif
+
 #define NO_NETWORK_COLLISIONS
 
 #ifdef WIN32
@@ -20,7 +25,12 @@ char *version="ManiaDrive 1.2custom";
 #define HISTORY_STATE_FILE	raydium_file_home_path("mania_drive.state")
 
 #define MUSIC_MENU	"mania_music/i_got_it_bad_-_The_Napoleon_Blown_Aparts.ogg"
+#ifdef MANIA_PORT
+// Android: "windowed mode" is used as a rendering resolution limit
+#define RESOLUTION_LIST "854x480\n960x540\n1280x720\n1600x900"
+#else
 #define RESOLUTION_LIST "320x240\n640x480\n800x600\n1024x768"
+#endif
 
 GLfloat sun[]={1.0,0.9,0.5,1.0};
 GLfloat amb[]={1.0,0.0,0.0,1.0};
@@ -507,6 +517,17 @@ raydium_gui_widget_sizes(5,5,25);
 raydium_gui_label_create("lblTitle",handle,50,90,"- Controls Help -",0.7,0,0);
 
 raydium_gui_widget_sizes(0,0,16);
+#ifdef MANIA_PORT
+raydium_gui_label_create("lblKH10",handle,50,80,"Right buttons : gas / brake & reverse",0,0,0);
+raydium_gui_label_create("lblKH20",handle,50,75,"Left buttons : steering",0,0,0);
+raydium_gui_label_create("lblKH30",handle,50,65,"RESET : restart track",0,0,0);
+raydium_gui_label_create("lblKH40",handle,50,60,"CAM : switch camera",0,0,0);
+raydium_gui_label_create("lblKH50",handle,50,50,"MENU / Back key : leave track",0,0,0);
+raydium_gui_label_create("lblKH60",handle,50,40,"Gamepad: RT/A gas, LT/B brake,",0,0,0);
+raydium_gui_label_create("lblKH65",handle,50,35,"X restart, Y camera",0,0,0);
+if(0)
+{
+#endif
 raydium_gui_label_create("lblKH10",handle,50,80,"Key Up : accelerate",0,0,0);
 raydium_gui_label_create("lblKH20",handle,50,75,"Key Down : brake / reverse",0,0,0);
 
@@ -518,6 +539,9 @@ raydium_gui_label_create("lblKH60",handle,50,45,"F6 : in-board fixed view",0,0,0
 raydium_gui_label_create("lblKH65",handle,50,40,"C : switch camera",0,0,0);
 
 raydium_gui_label_create("lblKH70",handle,50,30,"... and maybe hidden ones :)",0,0,0);
+#ifdef MANIA_PORT
+}
+#endif
 
 raydium_gui_widget_sizes(3,3,16);
 if(raydium_joy)
@@ -788,7 +812,11 @@ int handle;
 handle=raydium_gui_window_create("restart",25,50,50,20);
 raydium_gui_widget_sizes(0,0,18);
 raydium_gui_label_create("lblRestart1",handle,50,80,"You need to restart the game",0,0,0);
+#ifdef MANIA_PORT
+raydium_gui_label_create("lblRestart2",handle,50,60,"to apply resolution settings",0,0,0);
+#else
 raydium_gui_label_create("lblRestart2",handle,50,60,"to apply window settings",0,0,0);
+#endif
 raydium_gui_widget_sizes(15,5,18);
 raydium_gui_button_create("btnRestartOk",handle,35,15,"OK",btnRestartClick);
 }
@@ -1089,7 +1117,11 @@ raydium_gui_button_create("btnMusicVolTest",handle,82,41,"test",btnMusicVolTest)
 
 raydium_gui_widget_sizes(4,4,18);
 raydium_gui_check_create("chkShadow",handle,2,28," Shadow support (experimental)",shadow_support);
+#ifdef MANIA_PORT
+raydium_gui_check_create("chkWindow",handle,2,18," Max. resolution",windowed_mode);
+#else
 raydium_gui_check_create("chkWindow",handle,2,18," Window mode with",windowed_mode);
+#endif
 raydium_gui_widget_sizes(17,4,18);
 raydium_gui_combo_create("cboWindow",handle,63,18,RESOLUTION_LIST,raydium_gui_list_id(windowed_res,RESOLUTION_LIST));
 // save this settings
@@ -1259,9 +1291,15 @@ raydium_gui_label_create("lblMode",handle,50,90,"- Select Game Mode - ",0,0,0);
 
 raydium_gui_widget_sizes(25,4,18);
 raydium_gui_button_create("btnModeStory",handle,25,70,"Story",btnModeStory);
+#ifdef MANIA_PORT
+// the CQFD Corp. internet track/score server does not exist any more
+raydium_gui_button_create("btnModeLAN",handle,25,52,"LAN Multiplayer",btnModeLan);
+raydium_gui_button_create("btnOptions",handle,25,34,"Options",btnOptions);
+#else
 raydium_gui_button_create("btnModeNetTracks",handle,25,55,"Internet Tracks",btnModeNetTracks);
 raydium_gui_button_create("btnModeLAN",handle,25,40,"LAN Multiplayer",btnModeLan);
 raydium_gui_button_create("btnOptions",handle,25,25,"Options",btnOptions);
+#endif
 
 raydium_gui_widget_sizes(6,3,14);
 raydium_gui_button_create("btnBackToMain",handle,3,5,"Quit",btnQuit);
@@ -1493,7 +1531,11 @@ if(type==GAME_END)
 	else
 	    {
 	    // try again
+#ifdef MANIA_PORT
+	    strcpy(message,"- Try again (press RESET) -");
+#else
 	    strcpy(message,"- Try again (press space key) -");
+#endif
 	    }
 	}
 
@@ -2117,6 +2159,11 @@ dReal direct;
 dReal *tmp;
 dReal *pos;
 
+#ifdef MANIA_PORT
+// 0: menus (touch = mouse), 1: driving (touch buttons), 2: credits (tap = leave)
+port_set_ingame(scroll>=0 ? 2 : (strlen(mni_current) ? 1 : 0));
+#endif
+
 if(scroll>=0)
     {
     int i,cpt;
@@ -2171,7 +2218,35 @@ if(scroll>=0)
 
 if(strlen(mni_current)==0)
     {
+#ifdef MANIA_PORT
+    // Android Back key: close a popup, else go back to the main menu,
+    // and quit only from the main menu
+    if(raydium_key_last==1027)
+	{
+	static char *popups[]={"error","besttime","cantdrive","keyhelp","restart","storycompleted",NULL};
+	int i,m,done=0;
+	raydium_key_last=0;
+	for(i=0;popups[i];i++)
+	    if(raydium_gui_window_find(popups[i])>=0)
+		{
+		raydium_gui_window_delete_name(popups[i]);
+		if(!strcmp(popups[i],"storycompleted"))
+		    build_gui_Story();
+		done=1;
+		break;
+		}
+	m=raydium_gui_window_find("menu");
+	if(!done && m>=0 && raydium_gui_widget_find("btnModeStory",m)<0)
+	    {
+	    btnBackToMainMenu(NULL);
+	    done=1;
+	    }
+	if(!done)
+	    exit(0);
+	}
+#else
     if(raydium_key_last==1027) exit(0);
+#endif
     
     raydium_clear_frame();
     raydium_camera_look_at(0.1,0.1,0,0,1,0);
@@ -2496,7 +2571,11 @@ raydium_init_args_name(argc,argv,"mania_drive");
 
 raydium_parser_db_get("ManiaDrive-Windowed",str,"0");
 windowed_mode=atoi(str);
+#ifdef MANIA_PORT
+raydium_parser_db_get("ManiaDrive-WindowedRes",windowed_res,"1280x720");
+#else
 raydium_parser_db_get("ManiaDrive-WindowedRes",windowed_res,"800x600");
+#endif
 mode=(windowed_mode?RAYDIUM_RENDERING_WINDOW:RAYDIUM_RENDERING_FULLSCREEN);
 sscanf(windowed_res,"%ix%i",&full_sx_i,&full_sy_i);
 
@@ -2559,7 +2638,11 @@ raydium_parser_db_get("ManiaDrive-CameraSpeed",lagSpeed,"5.0");
 camera_lag=(lagActive[0]=='y'?1:0);
 sscanf(lagSpeed,"%f",&camera_lag_speed);
 
+#ifdef MANIA_PORT
+raydium_parser_db_get("ManiaDrive-ShadowSupport",str,"0");
+#else
 raydium_parser_db_get("ManiaDrive-ShadowSupport",str,"1");
+#endif
 shadow_support=atoi(str);
 
 raydium_parser_db_get("ManiaDrive-MusicVolume",str,"1.0");

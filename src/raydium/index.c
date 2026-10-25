@@ -87,6 +87,9 @@ extern "C" {
 #include "video.c"
 #include "web.c"
 #include "reg_api.c"
+#ifdef MANIA_PORT
+#include "port_engine.c" /* src/port: PHP replacement, ALUT, touch controls */
+#endif
 
 #else
 

@@ -156,6 +156,11 @@ raydium_ode_StepCallback=NULL;
 raydium_ode_BeforeElementDrawCallback=NULL;
 raydium_ode_AfterElementDrawCallback=NULL;
 raydium_ode_ObjectNearCollide=NULL;
+#if defined(dODE_VERSION) || defined(MANIA_PORT)
+// ODE >= 0.10 must be initialised before use (the 2006 ODE did not need it)
+dInitODE2(0);
+dAllocateODEDataForThread(dAllocateMaskAll);
+#endif
 raydium_ode_world=dWorldCreate();
 raydium_ode_space=dHashSpaceCreate(0);
 raydium_ode_contactgroup=dJointGroupCreate(0);

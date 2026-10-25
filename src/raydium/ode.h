@@ -11,7 +11,11 @@
 // ugly workaround to avoid odemath.h ...
 #define _ODE_ODEMATH_H_
 #endif
+#ifdef MANIA_PORT
+#include <ode/ode.h>
+#else
 #include "../ode/include/ode/ode.h"
+#endif
 
 #define RAYDIUM_ODE_MAX_OBJECTS			64
 #define RAYDIUM_ODE_MAX_ELEMENTS		256

@@ -373,6 +373,11 @@ raydium_log("ACK bogus (double ack, probably): tcpid=%i",tcpid);
 
 void raydium_network_player_name(char *str)
 {
+#ifdef MANIA_PORT
+// Android user names are "u0_a123": use a friendly default (editable in Options)
+strcpy(str,"Player");
+return;
+#endif
 #ifndef WIN32
 {
 struct passwd *pn;

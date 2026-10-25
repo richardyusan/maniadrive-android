@@ -20,7 +20,9 @@ void raydium_log(char *format, ...);
 int _glutWindowSize[2];
 signed char _glutMouseVisible;
 
-#ifdef WIN32
+#if defined(MANIA_PORT)
+#include "myglut-android.c" /* Android / headless EGL backend (src/port) */
+#elif defined(WIN32)
 #include "myglut-win32.c"
 #else
 #include "myglut-x11.c"

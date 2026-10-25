@@ -162,7 +162,13 @@ void raydium_joy_callback(void)
 #ifndef WIN32
  struct js_event e;			//structure for storing an event
  
-	if(!raydium_joy) { raydium_joy_init_vars(); return; }
+	if(!raydium_joy) {
+	    raydium_joy_init_vars();
+#ifdef MANIA_PORT
+	    raydium_joy_x=port_analog_x;
+	    raydium_joy_y=port_analog_y;
+#endif
+	    return; }
 
 	raydium_joy_click=0;	
 	while (read (raydium_joy, &e, sizeof(struct js_event)) > 0)
@@ -201,6 +207,12 @@ void raydium_joy_init(void)
 int autocenter=5;         /* default value. between 0 and 100 */
 
 	raydium_joy_init_vars();
+#ifdef MANIA_PORT
+	raydium_joy=0;
+	raydium_joy_event_handle=-1;
+	raydium_log("joy: using Android input (gamepad / touch)");
+	return;
+#endif
 #ifndef WIN32
 	if(raydium_init_cli_option_default("joydev",name,"/dev/js0"))	    
 	    raydium_joy=open(name,O_RDONLY|O_NONBLOCK);

@@ -1,0 +1,45 @@
+# Smoke test for scripts/test_linux.sh (1280x720 off-screen).
+# "<frame> <command> [args]", coordinates are 0..1 from the top-left corner.
+# See the headless section of src/port/myglut-android.c.
+
+# main menu -> Options -> tap the player name field (soft keyboard) -> Controls help
+60  shot 01_main_menu.ppm
+70  tap 0.73 0.743
+130 shot 02_options.ppm
+140 tap 0.84 0.357
+170 key 8
+175 key 8
+180 key 8
+185 key 8
+190 key 8
+195 key 8
+200 char R
+205 char Y
+210 shot 03_name_typed.ppm
+220 tap 0.875 0.843
+280 shot 04_controls_help.ppm
+# Back key x2 -> main menu
+290 key 27
+300 key 27
+330 shot 05_back_main.ppm
+# Story -> first track
+340 tap 0.73 0.60
+400 shot 06_story.ppm
+410 tap 0.117 0.208
+# close the 6 intro messages (Enter = focused OK button)
+560 key 13
+580 key 13
+600 key 13
+620 key 13
+640 key 13
+660 key 13
+680 shot 07_countdown.ppm
+# drive: hold GAS, steer left for a moment
+720 down 1 0.93 0.70
+800 shot 08_driving.ppm
+820 down 2 0.05 0.70
+850 up 2 0.05 0.70
+880 shot 09_steering.ppm
+890 up 1 0.93 0.70
+# MENU button -> back to the story screen
+895 tap 0.05 0.15

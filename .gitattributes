@@ -1,0 +1,3 @@
+# No line-ending conversion: scripts must keep LF (they run in Linux/WSL)
+# and the game data files must stay byte-identical to the original release.
+* -text

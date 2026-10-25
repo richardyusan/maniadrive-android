@@ -107,6 +107,9 @@ if(raydium_timecall_method==RAYDIUM_TIMECALL_METHOD_CLOCK)
     t.QuadPart>>=raydium_timecall_w32_divmodulo;
     return t.LowPart;
   }
+ #elif defined(MANIA_PORT)
+ (void)tv;
+ return (unsigned long)port_time_us();
  #else
  gettimeofday(&tv,NULL);
  return (tv.tv_sec*1000000 + tv.tv_usec);

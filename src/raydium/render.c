@@ -386,9 +386,18 @@ raydium_rendering_from_to(0,raydium_vertex_index);
 void raydium_rendering_finish(void)
 {
 static int fps=0;
+#ifdef MANIA_PORT
+/* clock() is CPU time: wrong FPS once the 60 fps limiter sleeps */
+#define RENDER_FPS_CLOCK() port_time_us()
+#define RENDER_FPS_SEC 1000000
+static uint64_t last=0;
+#else
+#define RENDER_FPS_CLOCK() clock()
+#define RENDER_FPS_SEC CLOCKS_PER_SEC
 static clock_t last=0;
+#endif
 fps++;
-if(!last) last=clock();
+if(!last) last=RENDER_FPS_CLOCK();
 
 raydium_callback_image();
 glFlush();
@@ -426,12 +435,14 @@ raydium_key_last=0;
 raydium_mouse_click=0;
 raydium_camera_pushed=0; 
 glPopMatrix();
-if(clock() > last + CLOCKS_PER_SEC)
+if(RENDER_FPS_CLOCK() > last + RENDER_FPS_SEC)
     {
-    last=clock();
+    last=RENDER_FPS_CLOCK();
     raydium_render_fps=fps;
     fps=0;
     }
+#undef RENDER_FPS_CLOCK
+#undef RENDER_FPS_SEC
 }
 
 void raydium_rendering_wireframe(void)

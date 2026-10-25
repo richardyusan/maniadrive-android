@@ -18,9 +18,14 @@ void raydium_shader_init(void)
 {
 int i;
 
+#ifdef MANIA_PORT
+// ManiaDrive uses no GLSL shader; keep gl4es on its fixed-pipeline path
+raydium_shader_support=0;
+#else
 raydium_shader_support=
     (glutExtensionSupported("GL_ARB_shader_objects") &&
      glutExtensionSupported("GL_ARB_shading_language_100") );
+#endif
 
 for(i=0;i<RAYDIUM_MAX_SHADERS;i++)
     {

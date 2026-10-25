@@ -1,0 +1,17 @@
+# build output
+/build/
+# downloaded third-party sources (scripts/fetch_deps.sh)
+/third_party/
+# signing keys: never commit them
+*.keystore
+*.jks
+# packages
+*.apk
+*.idsig
+*.aab
+# misc
+*.o
+*.a
+*.so
+.DS_Store
+Thumbs.db

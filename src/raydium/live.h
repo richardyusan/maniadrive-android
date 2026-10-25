@@ -12,7 +12,7 @@
 #ifndef LIVE_H
 #define LIVE_H
 
-#ifndef WIN32
+#ifndef RAYDIUM_NO_V4L
 #include <linux/types.h>
 #include <linux/videodev.h>
 #include <sys/mman.h>
@@ -33,7 +33,7 @@
 
 typedef struct raydium_live_Device 
 {
-#ifndef WIN32
+#ifndef RAYDIUM_NO_V4L
   int fd;
   struct video_capability cap;
   struct video_window win;

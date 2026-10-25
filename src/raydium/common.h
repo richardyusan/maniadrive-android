@@ -101,6 +101,15 @@
 #include <errno.h>
 #include "config.h"
 
+#if defined(WIN32) || defined(MANIA_PORT)
+#define RAYDIUM_NO_V4L
+#endif
+#ifdef MANIA_PORT
+#include <sys/stat.h>
+#include <ctype.h>
+#include "port.h"
+#endif
+
 #ifdef PHP_SUPPORT
 #ifdef WIN32
 #define PHP_WIN32

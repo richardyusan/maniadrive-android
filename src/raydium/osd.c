@@ -238,6 +238,9 @@ raydium_osd_cursor_ysize=ysize;
 void raydium_osd_cursor_draw(void)
 {
 if(!raydium_osd_cursor_texture || !raydium_window_tx) return;
+#ifdef MANIA_PORT
+if(!port_mouse_cursor) return; // touch screen: no arrow (shown for real mice)
+#endif
 
 raydium_osd_start();
 
